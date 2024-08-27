@@ -22,3 +22,5 @@ server:
     connection-timeout: 2s  # 서버와 TCP 연결을 수립하기 위해 기다리는 시간
     idle-timeout: 15s       # 데이터가 전송되지 않는 경우 TCP 연결을 닫기 전에 기다리는 시간
 
+polar:
+  catalog-service-uri: "http://localhost:9001"
