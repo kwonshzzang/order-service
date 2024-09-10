@@ -5,13 +5,21 @@ spring:
     import: "optional:configserver:" # 가능하면 컨피그 서버에서 설정 데이터를 가져온다.
   cloud:
     config:
-      uri: http://localhost:8888 # 설정 서버의 URL
+      uri: ${polar.config-service-uri} # 설정 서버의 URL
+      request-connect-timeout: 5000 # 설정 서버에 연결될 때까지 기다리는 시간(밀리초)
+      request-read-timeout: 5000    # 설정 서버에서 설정 데이터를 읽을 때까지 기다리는 시간(밀리초)
+      fail-fast: true  # 설정 서버 연결 실패를 치명적 오류 인식
+      retry:
+        max-attempts: 6 # 시도의 최대 횟수
+        initial-interval: 1000 # 최초 재시도 지연시간(밀리초)
+        max-interval: 2000 # 재시도 지연 최대시간(밀리초)
+        multiplier: 1.1 # 지연시간 승수
   lifecycle:
     timeout-per-shutdown-phase: 15s  # 15초 간의 우아한 종료 기간을 정의
   r2dbc:
-    username: user  # 해당 데이터베이스에 접근 권한이 있는 유저
-    password: password # 유저의 패스워드
-    url: r2dbc:postgresql://localhost:5432/polardb_order  # 연결하려는 데이터베이스에 대한 R2DBC URL
+    username: ${polar.r2dbc-username}  # 해당 데이터베이스에 접근 권한이 있는 유저
+    password: ${polar.r2dbc-password} # 유저의 패스워드
+    url: ${polar.r2dbc-datasource-url}  # 연결하려는 데이터베이스에 대한 R2DBC URL
     pool:
       max-create-connection-time: 2s # 풀에서 연결 객체 하나를 얻을 때까지 기다릴 수 있는 최대한의 시간
       initial-size: 5 # 연결 풀의 초기 크기
@@ -19,7 +27,7 @@ spring:
   flyway:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
-    url: jdbc:postgresql://localhost:5432/polardb_order
+    url: ${polar.flyway_jdbc_datasource-url}
 
 server:
   port: 9002           # 서버가 연결을 받아들이는 포트
@@ -28,6 +36,11 @@ server:
     connection-timeout: 2s  # 서버와 TCP 연결을 수립하기 위해 기다리는 시간
     idle-timeout: 15s       # 데이터가 전송되지 않는 경우 TCP 연결을 닫기 전에 기다리는 시간
 
-polar:
-  catalog-service-uri: "http://localhost:9001"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh  # HTTP를 통해 /actuator/refresh 엔드포인트를 노출한다.
 
+polar:
+  config-service-uri: http://localhost:8888
