@@ -23,3 +23,6 @@ spring:
     user: ${spring.r2dbc.username}     # R2DBC에 대해 설정한 값과 같은 유저명 사용
     password: ${spring.r2dbc.password} # R2DBC에 대해 설정한 값과 같은 패스워드 사용
     url: jdbc:postgresql://localhost:5432/polardb_order # R2DBC에 대해 설정한 데이터베이스와 같은 데이터베이스를 연결하기 위해 JDBC 드라이버 사용
+
+polar:
+  catalog-service-uri: "http://localhost:9001"
