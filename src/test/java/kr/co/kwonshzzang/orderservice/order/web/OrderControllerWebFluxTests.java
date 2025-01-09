@@ -6,7 +6,7 @@ import kr.co.kwonshzzang.orderservice.domain.OrderStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +20,7 @@ class OrderControllerWebFluxTests {
     @Autowired
     private WebTestClient webTestClient; // 웹 클라이언트의 변형으로 Restful 서비스 테스트를 쉽게 하기 위한 기능을 추가로 가지고 있다.
 
-    @MockitoBean
+    @MockBean
     private OrderService orderService; // OrderService의 모의 객체를 스프링 애플리케이션 컨넥스트에 추가한다.
 
     @Test
