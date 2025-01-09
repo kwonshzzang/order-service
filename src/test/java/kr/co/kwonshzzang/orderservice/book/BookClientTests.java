@@ -56,4 +56,19 @@ class BookClientTests {
                         b -> b.isbn().equals(bookIsbn)) // 반환된 책의 ISBN이 요청한 ISBN과 같은지 확인한다.
                 .verifyComplete(); // 리액티브 스트림이 성공적으로 완료됐는지 확인한다.
     }
+
+    @Test
+    void whenBookNotExistsThenReturnBook() {
+        var bookIsbn = "1234567891";
+
+        var mockResponse = new MockResponse()
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setResponseCode(404);
+
+        mockWebServer.enqueue(mockResponse);
+
+        StepVerifier.create(bookClient.getBookByIsbn(bookIsbn))
+                .expectNextCount(0)
+                .verifyComplete();
+    }
 }
