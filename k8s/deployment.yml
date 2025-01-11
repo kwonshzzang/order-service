@@ -26,10 +26,10 @@ spec:
             - containerPort: 9002 # 컨테이너에 의해 노출되는 포트
           env: # 파드로 전달되는 환경 변수의 목록
             - name: POLAR_CATALOG_SERVICE_URI
-              value: http://catalog-service
+              value: http://catalog-service:9001
             - name: SPRING_CLOUD_CONFIG_URI
-              value: http://config-service
+              value: http://config-service:8888
             - name: SPRING_R2DBC_URL
               value: r2dbc:postgresql://polar-postgres/polardb_order
-            - name: SPRING_FLYWAY_RUL
+            - name: SPRING_FLYWAY_URL
               value: jdbc:postgresql://polar-postgres/polardb_order
